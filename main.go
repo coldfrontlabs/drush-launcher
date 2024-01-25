@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"path/filepath"
 
 	"github.com/dasginganinja/drush-launcher/drushlauncher"
@@ -21,19 +22,23 @@ func main() {
 
 	// Strip program name from arguments before looping
 	progArgs := os.Args[1:]
-
+	fmt.Printf("%v", progArgs)
 	for i, arg := range progArgs {
-		// If we have -r or --root we will use the next argument as the drupal root (if exists)
+		fmt.Println("Debug: Args: ", arg)
 		if arg == "-r" || arg == "--root" {
 			if i+1 < len(progArgs) {
+				fmt.Printf("%v", arg)
 				defaultRoot = progArgs[i+1]
 			} else {
 				fmt.Println("Error: Missing value for root argument")
 				os.Exit(1)
 			}
+		} else if strings.HasPrefix(arg, "--root=") || strings.HasPrefix(arg, "-r=") {
+			fmt.Printf("Debug: splitting on equal sign ", arg)
+			defaultRoot = strings.Split(arg,"=")[1]
 		}
 	}
-
+	fmt.Println("Debug: Looking for Drupal at ", defaultRoot)
 	drupalRoot, _err = drushlauncher.FindDrupalRoot(defaultRoot)
 
 	if _err != nil {
@@ -52,6 +57,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println("Running drush with arguments:", progArgs)
 	drushCmd := exec.Command(drushExec, progArgs...)
 
 	// Pass the current environment variables to the drush command
