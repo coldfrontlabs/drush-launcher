@@ -22,9 +22,8 @@ func main() {
 
 	// Strip program name from arguments before looping
 	progArgs := os.Args[1:]
-	fmt.Printf("%v", progArgs)
+
 	for i, arg := range progArgs {
-		fmt.Println("Debug: Args: ", arg)
 		if arg == "-r" || arg == "--root" {
 			if i+1 < len(progArgs) {
 				fmt.Printf("%v", arg)
@@ -34,11 +33,10 @@ func main() {
 				os.Exit(1)
 			}
 		} else if strings.HasPrefix(arg, "--root=") || strings.HasPrefix(arg, "-r=") {
-			fmt.Printf("Debug: splitting on equal sign ", arg)
 			defaultRoot = strings.Split(arg,"=")[1]
 		}
 	}
-	fmt.Println("Debug: Looking for Drupal at ", defaultRoot)
+
 	drupalRoot, _err = drushlauncher.FindDrupalRoot(defaultRoot)
 
 	if _err != nil {
