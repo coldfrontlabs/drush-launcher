@@ -26,7 +26,6 @@ func main() {
 	for i, arg := range progArgs {
 		if arg == "-r" || arg == "--root" {
 			if i+1 < len(progArgs) {
-				fmt.Printf("%v", arg)
 				defaultRoot = progArgs[i+1]
 			} else {
 				fmt.Println("Error: Missing value for root argument")
