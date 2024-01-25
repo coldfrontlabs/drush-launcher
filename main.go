@@ -55,7 +55,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Running drush with arguments:", progArgs)
 	drushCmd := exec.Command(drushExec, progArgs...)
 
 	// Pass the current environment variables to the drush command
